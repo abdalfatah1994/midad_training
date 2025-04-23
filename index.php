@@ -1,40 +1,40 @@
 <?php
+$errors_array = [];
 $username = "";
 $email= "";
 $age = "";
-$passwerd = "";
-$config = "";
-$erorrs_aray = [];
-if($_SERVER["REQUEST_METHOD"] == "GET"){
-    $username = trim(string: $_GET["username"]);
-    $email = trim(string: $_GET["email"]);
-    $age = trim(string: $_GET["age"]);
-    $passwerd = trim(string: $_GET["passwerd"]);
-    $config = trim(string: $_GET["config"]);
+$password = "";
+$confirm_password = "";
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $username = trim($_POST["username"]);
+    $email = trim( $_POST["email"]);
+    $age = trim( $_POST["age"]);
+    $password = trim( $_POST["password"]);
+    $confirm_password = trim( $_POST["confirm_password"]);
     if(empty($username)){
-        $erorrs_aray['username'] = "user name is required";
+        $errors_array['username'] = "user name is required";
     }
     if(empty($email)){
-        $erorrs_aray['email'] = "E-mail is required";
-    }elseif (!filter_var(value:$email , filter:FILTER_VALIDATE_EMAIL)) {
-        $erorrs_aray['email'] = "Invalid E-mail format";        
+        $errors_array['email'] = "E-mail is required";
+    }elseif (!filter_var($email , FILTER_VALIDATE_EMAIL)) {
+        $errors_array['email'] = "Invalid E-mail format";        
     }
     if(empty($age)){
-        $erorrs_aray['age'] = "Age is required";
-    }elseif (!is_numeric(value:$age)) {
-        $erorrs_aray['age'] = "Invalid Age format";        
+        $errors_array['age'] = "Age is required";
+    }elseif (!is_numeric($age)) {
+        $errors_array['age'] = "Invalid Age format";        
     }
-    if(empty($passwerd)){
-        $erorrs_aray['passwerd'] = "Passwerd is required";
-    }elseif (strlen($age)>5) {
-        $erorrs_aray['passwerd'] = "Invalid password format";        
+    if(empty($password)){
+        $errors_array['password'] = "password is required";
+    }elseif (strlen($password) < 6) {
+        $errors_array['password'] = "Invalid password format";        
     }
-    if (empty($config)) {
-        $erorrs_aray['config'] = "the config is required";
-    }elseif($passwerd !== $config){
-        $erorrs_aray['config'] = "the config is not match";
+    if (empty($confirm_password)) {
+        $errors_array['confirm_password'] = "the confirm_password is required";
+    }elseif($password !== $confirm_password){
+        $errors_array['confirm_password'] = "the confirm_password is not match";
     }
-    if(empty($erorrs_aray)){
+    if(empty($errors_array)){
         echo "<h2>the form submition is successfully</h2>";
     }
 }
@@ -53,36 +53,36 @@ if($_SERVER["REQUEST_METHOD"] == "GET"){
 </head>
 <body>
     <div class="header_home">
-        <form method="GET" action="./data.php">
+        <form method="POST" action="./data.php">
             <h1>log in</h1>
             <label for="username">user name</label>
-            <input type="text" name="username" id="username" value="<?= htmlspecialchars(string:$username) ?>">
-            <div class="erorrs_attention"> <?php if(isset($erorrs_aray['username'])): ?>
-                <p style="color: red;"><?= $erorrs_aray['username']  ?></p>
+            <input type="text" name="username" id="username" value="<?= htmlspecialchars($username) ?>">
+            <div class="erorrs_attention"> <?php if(isset($errors_array['username'])): ?>
+                <p style="color: red;"><?= $errors_array['username']  ?></p>
                  <?php endif; ?> 
                 </div>
                 <label for="email">E-mail</label>
-                <input type="email" name="email" id="email" value="<?= htmlspecialchars(string:$email) ?>">
-                <div class="erorrs_attention"> <?php if(isset($erorrs_aray['email'])): ?>
-                    <p style="color: red;"><?= $erorrs_aray['email']  ?></p>
+                <input type="email" name="email" id="email" value="<?= htmlspecialchars($email) ?>">
+                <div class="erorrs_attention"> <?php if(isset($errors_array['email'])): ?>
+                    <p style="color: red;"><?= $errors_array['email']  ?></p>
                     <?php endif; ?> 
                 </div>
                 <label for="age">age</label>
-                <input type="number" name="age" id="age" value="<?=  htmlspecialchars(string:$age) ?>">
-                <div class="erorrs_attention"> <?php if(isset($erorrs_aray['age'])): ?>
-                    <p style="color: red;"><?= $erorrs_aray['age']  ?></p>
+                <input type="number" name="age" id="age" value="<?=  htmlspecialchars($age) ?>">
+                <div class="erorrs_attention"> <?php if(isset($errors_array['age'])): ?>
+                    <p style="color: red;"><?= $errors_array['age']  ?></p>
                     <?php endif; ?> 
                 </div>
-                <label for="passwerd">password</label>
-                <input type="password" name="passwerd" id="passwerd">
-                <div class="erorrs_attention"> <?php if(isset($erorrs_aray['passwerd'])): ?>
-                    <p style="color: red;"><?= $erorrs_aray['passwerd']  ?></p>
+                <label for="password">password</label>
+                <input type="password" name="password" id="password">
+                <div class="erorrs_attention"> <?php if(isset($errors_array['password'])): ?>
+                    <p style="color: red;"><?= $errors_array['password']  ?></p>
                     <?php endif; ?> 
                 </div>
-                <label for="passwerd">password confirm</label>
-                <input type="password" name="config" id="config">
-                <div class="erorrs_attention"> <?php if(isset($erorrs_aray['config'])): ?>
-                                <p style="color: red;"><?= $erorrs_aray['config']  ?></p>
+                <label for="password">password confirm</label>
+                <input type="password" name="confirm_password" id="confirm_password">
+                <div class="erorrs_attention"> <?php if(isset($errors_array['confirm_password'])): ?>
+                                <p style="color: red;"><?= $errors_array['confirm_password']  ?></p>
                                 <?php endif; ?> 
                             </div>
                             <button>Submit</button>
